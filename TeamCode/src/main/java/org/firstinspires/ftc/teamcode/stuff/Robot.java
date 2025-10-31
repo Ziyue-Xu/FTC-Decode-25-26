@@ -100,6 +100,8 @@ public class Robot {
         flywheel.setDirection(DcMotorSimple.Direction.REVERSE);
         flywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
+        spind.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 
         imu = imu_;
 

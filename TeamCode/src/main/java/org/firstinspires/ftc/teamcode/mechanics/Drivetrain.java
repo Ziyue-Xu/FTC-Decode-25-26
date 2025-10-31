@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.mechanics;
 
 // all of teamcode
-
+import static org.firstinspires.ftc.teamcode.tuning.Recipes.desired_theta;
 import org.firstinspires.ftc.teamcode.stuff.Robot;
 
 /* NOTES:
@@ -187,5 +187,19 @@ public class Drivetrain {
 
         Drivetrain.y_power = Drivetrain.y_power - stick_y;
         Drivetrain.x_power = Drivetrain.x_power + stick_x;
+    }
+
+
+    public static void diffySwerveDrive(double y_power, double x_power, double rotational_power) {
+        // "absolute y power"
+        final_y_power = x_power * -Math.sin(Robot.theta - Math.PI / 2) + y_power * Math.cos(Robot.theta - Math.PI / 2);
+        // "field centric x power"
+        final_x_power = x_power * Math.cos(Robot.theta - Math.PI / 2) - y_power * -Math.sin(Robot.theta - Math.PI / 2);
+
+        double rightHeading = Math.atan(final_y_power + rotational_power * Math.sin(desired_theta) / (final_x_power + rotational_power * Math.cos(desired_theta)));
+        double leftHeading = Math.atan(final_y_power - rotational_power * Math.sin(desired_theta) / (final_x_power - rotational_power * Math.cos(desired_theta)));
+
+
+
     }
 }

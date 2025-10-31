@@ -31,7 +31,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Config
-@Autonomous(name = "(red goal side) 🥵 Autonomous", group = "meh")
+@Autonomous(name = "(red goal side) 🥵 Autonomous", group = "Comp run")
 
 public class redGoalSide extends LinearOpMode {
 

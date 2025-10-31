@@ -46,7 +46,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-@TeleOp(name = "🥶 TeleOp", group = "Linear OpMode")
+@TeleOp(name = "🥶 TeleOp", group = "Comp Run")
 
 public class BlueT extends LinearOpMode {
 
