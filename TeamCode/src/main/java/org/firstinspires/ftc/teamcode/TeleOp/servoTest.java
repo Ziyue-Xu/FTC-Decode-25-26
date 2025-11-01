@@ -87,7 +87,7 @@ public class servoTest extends LinearOpMode {
                 spind.setTargetPosition(target);
                 spind.setPower(1);
                 spind.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                x += 1;
+                x -= 1;
                 julian = false;
             }
             else if(!gamepad1.x){
