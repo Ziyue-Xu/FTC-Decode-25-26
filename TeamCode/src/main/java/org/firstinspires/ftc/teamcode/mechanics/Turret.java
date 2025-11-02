@@ -15,7 +15,6 @@ public class Turret{
         turn.setTargetPosition((int)target);
         turn.setPower(1);
         turn.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
         return (Math.abs(currentAngle - desiredAngle) < 0.01);
     }
 }

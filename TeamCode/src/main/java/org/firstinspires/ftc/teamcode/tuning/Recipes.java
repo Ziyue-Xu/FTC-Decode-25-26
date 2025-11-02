@@ -20,12 +20,9 @@ public class Recipes {
 
     public static final Ingredient[][] redGoalSide = {
             {
-                    new Ingredient("position", new Point(-1.8 * TILE_LENGTH, -.2 * TILE_LENGTH)),
-                    // same servo values as y in teleop
-                    new Ingredient("servo", "hood", 2),
-                    new Ingredient("linear slide", .25)
+                    //new Ingredient("position", new Point(-1.8 * TILE_LENGTH, -.2 * TILE_LENGTH)),
+                    new Ingredient("position", new Point(-.5 * TILE_LENGTH, -1.5 * TILE_LENGTH)),
             },
-
     };
 
     public static final Ingredient[][] lqr = {

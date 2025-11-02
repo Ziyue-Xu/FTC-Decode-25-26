@@ -41,10 +41,10 @@ public class redGoalSide extends LinearOpMode {
 
     public double begin_wait = -1;
     public double wait = 0.5;
-    private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
-    String motif = "";
-    private AprilTagProcessor aprilTag;
-    private VisionPortal visionPortal;
+//    private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
+//    String motif = "";
+//    private AprilTagProcessor aprilTag;
+//    private VisionPortal visionPortal;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -64,8 +64,8 @@ public class redGoalSide extends LinearOpMode {
         );
 
         // initial position
-        Robot.X = -3 * TILE_LENGTH + LENGTH / 2;
-        Robot.Y = -.5 * TILE_LENGTH;
+        Robot.Y = -3 * TILE_LENGTH + LENGTH / 2;
+        Robot.X = -.5 * TILE_LENGTH;
         desired_position = new Point(X, Y);
 
         // initial theta
@@ -95,34 +95,34 @@ public class redGoalSide extends LinearOpMode {
         cooking = false;
 
 
-        //Camera code
-        initAprilTag();
-        if (USE_WEBCAM)
-            setManualExposure(6, 250);
-        waitForStart();
-
-        List<AprilTagDetection> currentDetections = aprilTag.getDetections();
-        for(AprilTagDetection detection: currentDetections){
-            if(motif.isEmpty()) {
-                switch (detection.id) {
-                    case 21:
-                        motif = "GPP";
-                        visionPortal.stopStreaming();
-                        break;
-                    case 22:
-                        motif = "PGP";
-                        visionPortal.stopStreaming();
-                        break;
-                    case 23:
-                        motif = "PPG";
-                        visionPortal.stopStreaming();
-                        break;
-                    default:
-                        telemetry.addData("Skipping", "this sigma is NOT the obelisk", detection.id);
-                }
-
-            }
-        }
+//        //Camera code
+//        initAprilTag();
+//        if (USE_WEBCAM)
+//            setManualExposure(6, 250);
+//        waitForStart();
+//
+//        List<AprilTagDetection> currentDetections = aprilTag.getDetections();
+//        for(AprilTagDetection detection: currentDetections){
+//            if(motif.isEmpty()) {
+//                switch (detection.id) {
+//                    case 21:
+//                        motif = "GPP";
+//                        visionPortal.stopStreaming();
+//                        break;
+//                    case 22:
+//                        motif = "PGP";
+//                        visionPortal.stopStreaming();
+//                        break;
+//                    case 23:
+//                        motif = "PPG";
+//                        visionPortal.stopStreaming();
+//                        break;
+//                    default:
+//                        telemetry.addData("Skipping", "this sigma is NOT the obelisk", detection.id);
+//                }
+//
+//            }
+//        }
         while (opModeIsActive()) {
 
             begin();
@@ -144,9 +144,6 @@ public class redGoalSide extends LinearOpMode {
                         case "wait":
                             begin_wait = Robot.time;
                             wait = ingredient.value;
-                            break;
-                        case "linear slide":
-                            desired_linear_slide_position = ingredient.value;
                             break;
                         case "servo":
                             switch (ingredient.servo) {
@@ -212,71 +209,71 @@ public class redGoalSide extends LinearOpMode {
         dashboardTelemetry.addData("X: ", X);
         dashboardTelemetry.addData("Y: ", Y);
 
-        dashboardTelemetry.addData("Motif: ", motif);
+//        dashboardTelemetry.addData("Motif: ", motif);
 
         dashboardTelemetry.update();
 
         telemetry.update();
     }
 
-    //camera code methods
-    private void initAprilTag() {
-        // Create the AprilTag processor by using a builder.
-        aprilTag = new AprilTagProcessor.Builder().build();
+//    //camera code methods
+//    private void initAprilTag() {
+//        // Create the AprilTag processor by using a builder.
+//        aprilTag = new AprilTagProcessor.Builder().build();
+////
+//        // Adjust Image Decimation to trade-off detection-range for detection-rate.
+//        // e.g. Some typical detection data using a Logitech C920 WebCam
+//        // Decimation = 1 ..  Detect 2" Tag from 10 feet away at 10 Frames per second
+//        // Decimation = 2 ..  Detect 2" Tag from 6  feet away at 22 Frames per second
+//        // Decimation = 3 ..  Detect 2" Tag from 4  feet away at 30 Frames Per Second
+//        // Decimation = 3 ..  Detect 5" Tag from 10 feet away at 30 Frames Per Second
+//        // Note: Decimation can be changed on-the-fly to adapt during a match.
+//        aprilTag.setDecimation(3);
 //
-        // Adjust Image Decimation to trade-off detection-range for detection-rate.
-        // e.g. Some typical detection data using a Logitech C920 WebCam
-        // Decimation = 1 ..  Detect 2" Tag from 10 feet away at 10 Frames per second
-        // Decimation = 2 ..  Detect 2" Tag from 6  feet away at 22 Frames per second
-        // Decimation = 3 ..  Detect 2" Tag from 4  feet away at 30 Frames Per Second
-        // Decimation = 3 ..  Detect 5" Tag from 10 feet away at 30 Frames Per Second
-        // Note: Decimation can be changed on-the-fly to adapt during a match.
-        aprilTag.setDecimation(3);
-
-        // Create the vision portal by using a builder.
-        if (USE_WEBCAM) {
-            visionPortal = new VisionPortal.Builder()
-                    .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
-                    .addProcessor(aprilTag)
-                    .build();
-        } else {
-            visionPortal = new VisionPortal.Builder()
-                    .setCamera(BuiltinCameraDirection.BACK)
-                    .addProcessor(aprilTag)
-                    .build();
-        }
-    }
-    private void setManualExposure(int exposureMS, int gain) {
-        // Wait for the camera to be open, then use the controls
-
-        if (visionPortal == null) {
-            return;
-        }
-
-        // Make sure camera is streaming before we try to set the exposure controls
-        if (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
-            telemetry.addData("Camera", "Waiting");
-            telemetry.update();
-            while (!isStopRequested() && (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING)) {
-                sleep(20);
-            }
-            telemetry.addData("Camera", "Ready");
-            telemetry.update();
-        }
-
-        // Set camera controls unless we are stopping.
-        if (!isStopRequested())
-        {
-            ExposureControl exposureControl = visionPortal.getCameraControl(ExposureControl.class);
-            if (exposureControl.getMode() != ExposureControl.Mode.Manual) {
-                exposureControl.setMode(ExposureControl.Mode.Manual);
-                sleep(50);
-            }
-            exposureControl.setExposure((long)exposureMS, TimeUnit.MILLISECONDS);
-            sleep(20);
-            GainControl gainControl = visionPortal.getCameraControl(GainControl.class);
-            gainControl.setGain(gain);
-            sleep(20);
-        }
-    }
+//        // Create the vision portal by using a builder.
+//        if (USE_WEBCAM) {
+//            visionPortal = new VisionPortal.Builder()
+//                    .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+//                    .addProcessor(aprilTag)
+//                    .build();
+//        } else {
+//            visionPortal = new VisionPortal.Builder()
+//                    .setCamera(BuiltinCameraDirection.BACK)
+//                    .addProcessor(aprilTag)
+//                    .build();
+//        }
+//    }
+//    private void setManualExposure(int exposureMS, int gain) {
+//        // Wait for the camera to be open, then use the controls
+//
+//        if (visionPortal == null) {
+//            return;
+//        }
+//
+//        // Make sure camera is streaming before we try to set the exposure controls
+//        if (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
+//            telemetry.addData("Camera", "Waiting");
+//            telemetry.update();
+//            while (!isStopRequested() && (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING)) {
+//                sleep(20);
+//            }
+//            telemetry.addData("Camera", "Ready");
+//            telemetry.update();
+//        }
+//
+//        // Set camera controls unless we are stopping.
+//        if (!isStopRequested())
+//        {
+//            ExposureControl exposureControl = visionPortal.getCameraControl(ExposureControl.class);
+//            if (exposureControl.getMode() != ExposureControl.Mode.Manual) {
+//                exposureControl.setMode(ExposureControl.Mode.Manual);
+//                sleep(50);
+//            }
+//            exposureControl.setExposure((long)exposureMS, TimeUnit.MILLISECONDS);
+//            sleep(20);
+//            GainControl gainControl = visionPortal.getCameraControl(GainControl.class);
+//            gainControl.setGain(gain);
+//            sleep(20);
+//        }
+//    }
 }

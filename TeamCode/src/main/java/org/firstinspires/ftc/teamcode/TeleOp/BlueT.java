@@ -13,6 +13,7 @@ import static org.firstinspires.ftc.teamcode.stuff.Robot.X;
 import static org.firstinspires.ftc.teamcode.stuff.Robot.Y;
 import static org.firstinspires.ftc.teamcode.stuff.Robot.begin;
 import static org.firstinspires.ftc.teamcode.stuff.Robot.end;
+import static org.firstinspires.ftc.teamcode.stuff.Robot.flywheel;
 import static org.firstinspires.ftc.teamcode.stuff.Robot.imu;
 import static org.firstinspires.ftc.teamcode.stuff.Robot.initial_theta;
 import static org.firstinspires.ftc.teamcode.stuff.Robot.inta;
@@ -32,6 +33,7 @@ import static org.firstinspires.ftc.teamcode.tuning.Recipes.desired_theta;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 
@@ -41,6 +43,7 @@ import org.firstinspires.ftc.teamcode.mechanics.Drivetrain;
 import org.firstinspires.ftc.teamcode.mechanics.ServoErmSigma;
 import org.firstinspires.ftc.teamcode.navigation.Motion;
 import org.firstinspires.ftc.teamcode.stuff.Robot;
+import org.firstinspires.ftc.teamcode.tuning.Constants;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -67,6 +70,10 @@ public class BlueT extends LinearOpMode {
     public boolean left_bumper2 = false;
     public boolean up_bumper2 = false;
     public boolean down_bumper2 = false;
+
+    public boolean coooooking = true;
+    public boolean coooooking2 = true;
+    public int x = 1;
 
 
     @Override
@@ -187,21 +194,54 @@ public class BlueT extends LinearOpMode {
         // driver 2
         new Thread(() -> {
             while (opModeIsActive()) {
+                servos.setHood(0.5);
                 // first mark
                 if (gamepad2.right_trigger > 0.6) {
 
                     // goofy ahh sleep
                     try { Thread.sleep(300); } catch (Exception ignored) {}
-
                     servos.transP1();
+                }
+
+                if (gamepad2.left_trigger > .6) {
                     servos.transP2();
                 }
 
                 inta.setPower(gamepad2.left_stick_y);
-                spind.setPower(gamepad2.left_stick_x * .3);
+                if (Math.abs(gamepad2.left_stick_y) > .3) {
+                    servos.intake();
+                }
+                else if (gamepad2.y && coooooking) {
+                    int target = (int)Math.round((Constants.CPR * 93.0 / 22.0 /6.0) * x);
+                    spind.setTargetPosition(target);
+                    spind.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    spind.setPower(1);
+                    x += 1;
+                    servos.spin();
+                    coooooking = false;
+                }
+                else if(!gamepad2.y){
+                    coooooking = true;
+                    servos.stop();
+                }
+                else if (gamepad2.dpad_left && coooooking2) {
+                    int target = -(int)Math.round((Constants.CPR * 93.0 / 22.0 /6.0) * x);
+                    spind.setTargetPosition(target);
+                    spind.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    spind.setPower(1);
+                    x -= 1;
+                    servos.spin();
+                    coooooking2 = false;
+                }
+                else if(!gamepad2.dpad_left){
+                    coooooking2 = true;
+                    servos.stop();
+                }
+                flywheel.setPower(-1);
                 turn.setPower(gamepad2.right_stick_x);
 
 
+                servos.intake();
             }
         }).start();
 
