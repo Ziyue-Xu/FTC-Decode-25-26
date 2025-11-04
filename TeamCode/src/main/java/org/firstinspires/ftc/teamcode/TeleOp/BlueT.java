@@ -94,8 +94,8 @@ public class BlueT extends LinearOpMode {
         );
 
         // initial position
-        X = 3 * TILE_LENGTH - LENGTH / 2;
-        Y = 0.5 * TILE_LENGTH;
+        X = 0 * TILE_LENGTH;
+        Y = 0 * TILE_LENGTH;
 
         // initial theta
         initial_theta = Math.PI;

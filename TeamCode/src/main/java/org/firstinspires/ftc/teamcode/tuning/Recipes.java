@@ -29,7 +29,8 @@ public class Recipes {
 
 
             {
-                    new Ingredient("position", new Point(-1.8 * TILE_LENGTH, -.2 * TILE_LENGTH))
+                    new Ingredient("position", new Point(0 * TILE_LENGTH, 0 * TILE_LENGTH)),
+                    new Ingredient("theta", Math.toRadians(90))
             },
 
     };
