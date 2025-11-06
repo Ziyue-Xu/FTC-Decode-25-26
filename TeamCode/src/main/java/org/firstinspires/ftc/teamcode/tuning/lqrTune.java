@@ -32,6 +32,14 @@ public class lqrTune extends LinearOpMode {
     public double begin_wait = -1;
     public double wait = 0.5;
 
+    public static double R = 0.01;
+    public static double Q = 0;
+
+    public static double x;
+    public static double y;
+    public static double theta;
+    public static double tval;
+
 
 
     @Override
@@ -52,8 +60,8 @@ public class lqrTune extends LinearOpMode {
         );
 
         // initial position
-        Robot.X = -3 * TILE_LENGTH + LENGTH/2;
-        Robot.Y = -0.5 * TILE_LENGTH;
+        Robot.X = -0.5 * TILE_LENGTH;
+        Robot.Y = -3 * TILE_LENGTH + LENGTH / 2;
         desired_position = new Point(X, Y);
 
         // initial theta

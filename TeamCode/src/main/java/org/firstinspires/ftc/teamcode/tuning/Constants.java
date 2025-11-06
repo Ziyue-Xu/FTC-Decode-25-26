@@ -106,6 +106,8 @@ public class Constants {
             479001600 * 13D * 14D * 15D * 16D
     };
 
-    public static final double[][] Q = {{1, 0}, {0, 1}};
-    public static final double[][] R = {{0.01, 0}, {0, 0.01}};
+    // 3
+    public static final double[][] Q = {{3, 0}, {0, 3}};
+    // .01
+    public static final double[][] R = {{.01, 0}, {0, .01}};
 }

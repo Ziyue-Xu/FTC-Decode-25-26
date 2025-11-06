@@ -130,10 +130,10 @@ public class Drivetrain {
 
     public static void absolute_drive(double y_power, double x_power, double rotational_power) {
         // "absolute y power"
-        final_y_power = x_power * -Math.sin(Robot.theta - Math.PI / 2) + y_power * Math.cos(Robot.theta - Math.PI / 2);
+        final_y_power = y_power * Math.sin(Robot.theta + Math.PI / 2) + x_power * Math.cos(Robot.theta + Math.PI / 2);
 
         // "field centric x power"
-        final_x_power = x_power * Math.cos(Robot.theta - Math.PI / 2) - y_power * -Math.sin(Robot.theta - Math.PI / 2);
+        final_x_power = y_power * Math.cos(Robot.theta + Math.PI / 2) + x_power * Math.sin(Robot.theta + Math.PI / 2);
 
         // Note: The "correction" is to counter potential errors in strafing
         // Tip: Let the driver team tune this value
@@ -145,11 +145,11 @@ public class Drivetrain {
         // positive = clockwise
 
         // x, y, rotational -> motor powers
-        front_left_motor_power = final_y_power + final_x_power + rotational_power;
-        back_right_motor_power = final_y_power + final_x_power - rotational_power;
+        front_left_motor_power = final_y_power - final_x_power + rotational_power;
+        back_right_motor_power = final_y_power - final_x_power - rotational_power;
 
-        front_right_motor_power = final_y_power - final_x_power - rotational_power;
-        back_left_motor_power = final_y_power - final_x_power + rotational_power;
+        front_right_motor_power = final_y_power + final_x_power - rotational_power;
+        back_left_motor_power = final_y_power + final_x_power + rotational_power;
 
 
         // tricky part: since the motors take input on the interval [-1, 1]

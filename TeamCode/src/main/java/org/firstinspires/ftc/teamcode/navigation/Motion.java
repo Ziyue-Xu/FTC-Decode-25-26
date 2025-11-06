@@ -9,6 +9,8 @@ import org.firstinspires.ftc.teamcode.mathemagics.Oikura;
 import org.firstinspires.ftc.teamcode.mathemagics.Point;
 import org.firstinspires.ftc.teamcode.mechanics.Drivetrain;
 import org.firstinspires.ftc.teamcode.stuff.Robot;
+import org.firstinspires.ftc.teamcode.tuning.Constants;
+import org.firstinspires.ftc.teamcode.tuning.lqrTune;
 
 import java.util.Queue;
 
@@ -106,7 +108,8 @@ public class Motion {
             t = 0;
         }
 
-        t = Math.min(1, t + .285 / curve.distance());
+        //.285
+        t = Math.min(1, t + .04 / curve.distance());
 
         Point ideal_position = curve.B(t);
 
@@ -122,8 +125,8 @@ public class Motion {
         LQR lqr = new LQR(
                 new double[][]{{1, 0}, {0, 1}},
                 new double[][]{{dt, 0}, {0, dt}},
-                new double[][]{{3, 0}, {0, 3}},
-                new double[][]{{.005, 0}, {0, .005}}
+                Constants.Q,
+                Constants.R
         );
 
         double[][] powers = lqr.control(
