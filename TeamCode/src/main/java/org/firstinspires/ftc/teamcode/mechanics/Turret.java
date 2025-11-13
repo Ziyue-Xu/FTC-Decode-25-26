@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.mechanics;
 import static org.firstinspires.ftc.teamcode.stuff.Robot.turn;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.stuff.Robot;
 import org.firstinspires.ftc.teamcode.tuning.Constants;
 
 public class Turret{
@@ -11,7 +12,7 @@ public class Turret{
     private final static int turretRatio = 7;
 
     public static boolean pointTurret(double desiredAngle){
-        double target = (desiredAngle / (2 * Math.PI)) * Constants.CPR * turretRatio;
+        double target = ((desiredAngle + Robot.theta) / (2 * Math.PI)) * Constants.CPR * turretRatio;
         turn.setTargetPosition((int)target);
         turn.setPower(1);
         turn.setMode(DcMotor.RunMode.RUN_TO_POSITION);

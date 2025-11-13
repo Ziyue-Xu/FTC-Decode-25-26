@@ -18,13 +18,86 @@ public class Recipes {
 
     // autonomous recipes
 
-    public static final Ingredient[][] redGoalSide = {
+    public static final Ingredient[][] redFarSideGPP = {
             {
-                    //new Ingredient("position", new Point(-1.8 * TILE_LENGTH, -.2 * TILE_LENGTH)),
-                    new Ingredient("position", new Point(-.5 * TILE_LENGTH, -1.5 * TILE_LENGTH)),
+                    new Ingredient("position", new Point(-.5 * TILE_LENGTH, .5 * TILE_LENGTH)),
+                    new Ingredient("theta", Math.toRadians(45)),
+                    new Ingredient("shooter", 1),
+                    new Ingredient("servo", "hood", .5)
             },
+            {
+                    new Ingredient("servo","transfer",1)
+            },
+            {
+                    new Ingredient("spindexer", 60)
+            },
+            {
+                    new Ingredient("servo","transfer",1)
+            },
+            {
+                    new Ingredient("spindexer", 60)
+            },
+            {
+                    new Ingredient("servo","transfer",1)
+            },
+            {
+                    new Ingredient("spindexer", 60)
+            }
     };
-
+    public static final Ingredient[][] redFarSidePGP = {
+            {
+                    new Ingredient("position", new Point(-.5 * TILE_LENGTH, .5 * TILE_LENGTH)),
+                    new Ingredient("theta", Math.toRadians(45)),
+                    new Ingredient("shooter", 1),
+                    new Ingredient("servo", "hood", .5),
+                    new Ingredient("spindexer",-60)
+            },
+            {
+                    new Ingredient("servo","transfer",1)
+            },
+            {
+                    new Ingredient("spindexer", 60)
+            },
+            {
+                    new Ingredient("servo","transfer",1)
+            },
+            {
+                    new Ingredient("spindexer", 60)
+            },
+            {
+                    new Ingredient("servo","transfer",1)
+            },
+            {
+                    new Ingredient("spindexer", 60)
+            }
+    };
+    public static final Ingredient[][] redFarSidePPG = {
+            {
+                    new Ingredient("position", new Point(-.5 * TILE_LENGTH, .5 * TILE_LENGTH)),
+                    new Ingredient("theta", Math.toRadians(45)),
+                    new Ingredient("shooter", 1),
+                    new Ingredient("servo", "hood", .5),
+                    new Ingredient("spindexer",60)
+            },
+            {
+                    new Ingredient("servo","transfer",1)
+            },
+            {
+                    new Ingredient("spindexer", 60)
+            },
+            {
+                    new Ingredient("servo","transfer",1)
+            },
+            {
+                    new Ingredient("spindexer", 60)
+            },
+            {
+                    new Ingredient("servo","transfer",1)
+            },
+            {
+                    new Ingredient("spindexer", 60)
+            }
+    };
     public static final Ingredient[][] lqr = {
 
 

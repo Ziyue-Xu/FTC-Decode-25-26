@@ -23,9 +23,9 @@ public class Ingredient {
     // claw
     public String servo;
     public double distance;
-    public Ingredient(String type, String claw, double dist) {
+    public Ingredient(String type, String servo, double dist) {
         this.type = type;
-        this.servo = claw;
+        this.servo = servo;
         this.distance = dist;
     }
 }
