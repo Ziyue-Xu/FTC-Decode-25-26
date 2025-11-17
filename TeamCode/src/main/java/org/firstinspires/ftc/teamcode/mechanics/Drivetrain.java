@@ -134,7 +134,6 @@ public class Drivetrain {
 
         // "field centric x power"
         final_x_power = y_power * Math.cos(Robot.theta - Math.PI / 2) + x_power * Math.sin(Robot.theta - Math.PI / 2);
-
         // Note: The "correction" is to counter potential errors in strafing
         // Tip: Let the driver team tune this value
         double correction = 1;
