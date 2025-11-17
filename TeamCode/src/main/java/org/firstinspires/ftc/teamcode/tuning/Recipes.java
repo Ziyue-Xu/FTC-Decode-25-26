@@ -102,8 +102,7 @@ public class Recipes {
 
 
             {
-                    new Ingredient("position", new Point(0 * TILE_LENGTH, 0 * TILE_LENGTH)),
-                    new Ingredient("theta", Math.toRadians(90))
+                    new Ingredient("position", new Point(0.5 * TILE_LENGTH, -1.5 * TILE_LENGTH)),
             },
 
     };

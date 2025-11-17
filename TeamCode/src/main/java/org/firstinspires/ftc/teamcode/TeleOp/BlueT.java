@@ -3,7 +3,11 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 import static org.firstinspires.ftc.teamcode.mechanics.Drivetrain.FIELD_CENTRIC;
 import static org.firstinspires.ftc.teamcode.mechanics.Drivetrain.absolute_drive;
 import static org.firstinspires.ftc.teamcode.mechanics.Drivetrain.accelerate;
+import static org.firstinspires.ftc.teamcode.mechanics.Drivetrain.back_left_motor_power;
+import static org.firstinspires.ftc.teamcode.mechanics.Drivetrain.back_right_motor_power;
 import static org.firstinspires.ftc.teamcode.mechanics.Drivetrain.field_centric_drive;
+import static org.firstinspires.ftc.teamcode.mechanics.Drivetrain.front_left_motor_power;
+import static org.firstinspires.ftc.teamcode.mechanics.Drivetrain.front_right_motor_power;
 import static org.firstinspires.ftc.teamcode.mechanics.Drivetrain.robot_centric_drive;
 import static org.firstinspires.ftc.teamcode.mechanics.Drivetrain.rotational_power;
 import static org.firstinspires.ftc.teamcode.mechanics.Drivetrain.x_power;
@@ -24,23 +28,29 @@ import static org.firstinspires.ftc.teamcode.stuff.Robot.settings;
 import static org.firstinspires.ftc.teamcode.stuff.Robot.spind;
 import static org.firstinspires.ftc.teamcode.stuff.Robot.theta;
 import static org.firstinspires.ftc.teamcode.stuff.Robot.turn;
+import static org.firstinspires.ftc.teamcode.tuning.Constants.CPR;
 import static org.firstinspires.ftc.teamcode.tuning.Constants.LENGTH;
 import static org.firstinspires.ftc.teamcode.tuning.Constants.TELEOP_FIELD;
 import static org.firstinspires.ftc.teamcode.tuning.Constants.TILE_LENGTH;
 import static org.firstinspires.ftc.teamcode.tuning.Recipes.desired_linear_slide_position;
+import static org.firstinspires.ftc.teamcode.tuning.Recipes.desired_position;
 import static org.firstinspires.ftc.teamcode.tuning.Recipes.desired_theta;
+import com.acmerobotics.dashboard.FtcDashboard;
 
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.mathemagics.Point;
 import org.firstinspires.ftc.teamcode.mechanics.Drivetrain;
 import org.firstinspires.ftc.teamcode.mechanics.ServoErmSigma;
+import org.firstinspires.ftc.teamcode.mechanics.Spindexer;
 import org.firstinspires.ftc.teamcode.navigation.Motion;
 import org.firstinspires.ftc.teamcode.stuff.Robot;
 import org.firstinspires.ftc.teamcode.tuning.Constants;
@@ -137,12 +147,8 @@ public class BlueT extends LinearOpMode {
                     b1 = false;
                 }
 
-                if (gamepad1.y && !y1) {
-                    desired_theta = theta + Math.toRadians(45);
-
-                    y1 = true;
-                } else if (!gamepad1.y) {
-                    y1 = false;
+                if (gamepad1.y) {
+                    reset(hardwareMap);
                 }
 
                 if (gamepad1.a && !a1) {
@@ -194,8 +200,38 @@ public class BlueT extends LinearOpMode {
         // driver 2
         new Thread(() -> {
             while (opModeIsActive()) {
-                servos.setHood(0.5);
-                // first mark
+                if (gamepad2.right_bumper)
+                    servos.setHood(.2);
+                if (gamepad2.left_bumper)
+                    servos.setHood(.5);
+                if (gamepad2.x) {
+                    flywheel.setPower(-1);
+                }
+                else if (gamepad2.b) {
+                    flywheel.setPower(0);
+                }
+                else if (gamepad2.y && coooooking) {
+                    int target = (int)Math.round((Constants.CPR / 6.0) * (x));
+                    spind.setTargetPosition(target);
+                    spind.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+                    spind.setPower(1);
+                    x += 1;
+                    coooooking = false;
+                }
+                else if(!gamepad2.y){
+                    coooooking = true;
+                }
+                else if (gamepad2.a && coooooking2) {
+                    int target = (int)Math.round((Constants.CPR / 6.0) * (x - 2));
+                    spind.setTargetPosition(target);
+                    spind.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+                    spind.setPower(1);
+                    x -= 1;
+                    coooooking2 = false;
+                }
+                else if (!gamepad2.a) {
+                    coooooking2 = true;
+                }
                 if (gamepad2.right_trigger > 0.6) {
 
                     // goofy ahh sleep
@@ -206,42 +242,8 @@ public class BlueT extends LinearOpMode {
                 if (gamepad2.left_trigger > .6) {
                     servos.transP2();
                 }
-
-                inta.setPower(gamepad2.left_stick_y);
-                if (Math.abs(gamepad2.left_stick_y) > .3) {
-                    servos.intake();
-                }
-                else if (gamepad2.y && coooooking) {
-                    int target = (int)Math.round((Constants.CPR * 93.0 / 22.0 /6.0) * x);
-                    spind.setTargetPosition(target);
-                    spind.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    spind.setPower(1);
-                    x += 1;
-                    servos.spin();
-                    coooooking = false;
-                }
-                else if(!gamepad2.y){
-                    coooooking = true;
-                    servos.stop();
-                }
-                else if (gamepad2.dpad_left && coooooking2) {
-                    int target = -(int)Math.round((Constants.CPR * 93.0 / 22.0 /6.0) * x);
-                    spind.setTargetPosition(target);
-                    spind.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    spind.setPower(1);
-                    x -= 1;
-                    servos.spin();
-                    coooooking2 = false;
-                }
-                else if(!gamepad2.dpad_left){
-                    coooooking2 = true;
-                    servos.stop();
-                }
-                flywheel.setPower(-1);
-                turn.setPower(gamepad2.right_stick_x);
-
-
-                servos.intake();
+                inta.setPower(gamepad2.left_stick_y * Math.abs(gamepad2.left_stick_y));
+                turn.setPower(-gamepad2.right_stick_x * Math.abs(gamepad2.right_stick_x));
             }
         }).start();
 
@@ -280,7 +282,6 @@ public class BlueT extends LinearOpMode {
             }
 
 
-            //claw.rotToDeg((angle_to_horizontal + desired_claw_angle + 10) * Math.signum(Math.cos(Arm.POSITION)));
 
 
             end();
@@ -302,7 +303,20 @@ public class BlueT extends LinearOpMode {
         telemetry.addData("imu data", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
 
         telemetry.addData("diffyL", ServoErmSigma.hood.getPosition());
+        telemetry.addData("turret pos", turn.getCurrentPosition());
+        telemetry.addData("turret target", turn.getTargetPosition());
+        telemetry.addData("spind pos", spind.getCurrentPosition());
+        telemetry.addData("spind target", spind.getTargetPosition());
 
         telemetry.update();
+
+        FtcDashboard dashboard = FtcDashboard.getInstance();
+        Telemetry dashboardTelemetry = dashboard.getTelemetry();
+
+        dashboardTelemetry.addData("X: ", Robot.X);
+        dashboardTelemetry.addData("Y: ", Robot.Y);
+        dashboardTelemetry.addData("imu: ", Robot.theta);
+
+        dashboardTelemetry.update();
     }
 }

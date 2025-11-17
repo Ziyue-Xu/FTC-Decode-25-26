@@ -100,7 +100,8 @@ public class Robot {
         flywheel.setDirection(DcMotorSimple.Direction.REVERSE);
         flywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        spind.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        spind.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        turn.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
 
         imu = imu_;
@@ -133,8 +134,8 @@ public class Robot {
 
     public static void update() {
         Localization.localize(
-                front_right_motor.getCurrentPosition(),
-                front_left_motor.getCurrentPosition()
+                -back_right_motor.getCurrentPosition(),
+                -front_left_motor.getCurrentPosition()
         );
 
         // [0, PI]

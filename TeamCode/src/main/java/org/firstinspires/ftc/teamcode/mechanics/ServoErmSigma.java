@@ -19,8 +19,6 @@ public class ServoErmSigma {
     public ServoErmSigma(HardwareMap hardwareMap){
         trans = hardwareMap.servo.get("trans");
         hood = hardwareMap.servo.get("hood");
-        intHelpL = hardwareMap.crservo.get("inthelpL");
-        intHelpR = hardwareMap.crservo.get("inthelpR");
     }
 
     public void transP1() {
@@ -34,23 +32,4 @@ public class ServoErmSigma {
     public void setHood(double dist) {
         hood.setPosition(dist);
     }
-
-    public void intake() {
-        intHelpL.setPower(1);
-        intHelpR.setPower(-1);
-    }
-    public void spin() {
-        intHelpL.setPower(1);
-        intHelpR.setPower(1);
-    }
-    public void bakspin() {
-        intHelpL.setPower(-1);
-        intHelpR.setPower(-1);
-    }
-
-    public void stop() {
-        intHelpL.setPower(0);
-        intHelpR.setPower(0);
-    }
-
 }

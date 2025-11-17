@@ -65,7 +65,7 @@ public class lqrTune extends LinearOpMode {
         desired_position = new Point(X, Y);
 
         // initial theta
-        //0 is facing right then goes clockwise
+        //0 is facing forward then goes clockwise
         initial_theta = 0;
         theta = 0;
         desired_theta = 0;
@@ -199,7 +199,7 @@ public class lqrTune extends LinearOpMode {
 
         dashboardTelemetry.addData("X: ", X);
         dashboardTelemetry.addData("Y: ", Y);
-        dashboardTelemetry.addData("imu: ", theta);
+        dashboardTelemetry.addData("imu: ", Robot.theta);
 
         dashboardTelemetry.update();
 
