@@ -97,17 +97,20 @@ public class Localization {
         theta = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS) + initial_theta;
 
         double dx = (x_pod - X_POD) / OP_CPR * OP_CIRCUMFERENCE;
+        System.out.println(x_pod-X_POD);
         System.out.println(dx + " = pre arclength subtract");
         dx = dx - Angular.optimal_angular_displacement(previous_theta, theta) * CR_TO_X_POD;
         System.out.println(dx + " = after arclength subtract");
 
         double dy = (y_pod - Y_POD) / OP_CPR * OP_CIRCUMFERENCE;
+        System.out.println(dy + " = dy pre arclength subtract");
         dy = dy - Angular.optimal_angular_displacement(previous_theta, theta) * CR_TO_Y_POD;
-        Robot.X = Robot.X + Math.cos(theta + Math.PI/2) * dy + Math.cos(theta) * dx;
+        System.out.println(dy + " = dy after arclength subtract");
+        Robot.X = Robot.X + Math.cos(theta) * dy + Math.sin(theta) * dx;
         System.out.println("delta x = " + (Math.cos(theta + Math.PI/2) * dy + Math.cos(theta) * dx));
         X_POD = x_pod;
 
-        Robot.Y = Robot.Y + Math.sin(theta + Math.PI/2) * dy + Math.sin(theta) * dx;
+        Robot.Y = Robot.Y + Math.sin(theta) * dy + Math.cos(theta) * dx;
 
         Y_POD = y_pod;
     }

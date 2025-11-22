@@ -134,7 +134,7 @@ public class Robot {
 
     public static void update() {
         Localization.localize(
-                -back_right_motor.getCurrentPosition(),
+                back_right_motor.getCurrentPosition(),
                 -front_left_motor.getCurrentPosition()
         );
 

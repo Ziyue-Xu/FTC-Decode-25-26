@@ -27,8 +27,8 @@ public class Constants {
     public static final double TILE_LENGTH = 24 * 2.54 / 100;
 
     //center of rotation to each pod x = left/right y = up and down in relation to the field matrices
-    public static final double CR_TO_X_POD = .193;
-    public static final double CR_TO_Y_POD = .193;
+    public static final double CR_TO_X_POD = .0835;
+    public static final double CR_TO_Y_POD = .169;
 
     // 0 = open
     // 1 = closed (has "obstacle")
