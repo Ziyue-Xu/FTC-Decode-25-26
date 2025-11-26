@@ -56,8 +56,7 @@ public class CameraSigma extends LinearOpMode{
 
                     }
             }
-            telemetry.addData("motif",motif);
-            telemetry.update();
+
             sleep(20);
         }
     }

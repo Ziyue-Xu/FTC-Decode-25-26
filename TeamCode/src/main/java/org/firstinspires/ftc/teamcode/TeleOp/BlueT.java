@@ -65,12 +65,13 @@ public class BlueT extends LinearOpMode {
     public boolean b2 = false;
     public boolean y2 = false;
     public boolean x2 = false;
-
     public boolean right_bumper2 = false;
     public boolean left_bumper2 = false;
     public boolean up_bumper2 = false;
     public boolean down_bumper2 = false;
 
+    public boolean shooterOn = true;
+    public boolean joyBoy = false;
     public boolean coooooking = true;
     public boolean coooooking2 = true;
     public int x = 1;
@@ -136,7 +137,22 @@ public class BlueT extends LinearOpMode {
                 } else if (!gamepad1.b) {
                     b1 = false;
                 }
+                //added this for sigma driving
+                if(gamepad1.start){
+                    imu.resetYaw();
+                }
+                //take this out fo rthe meet, just so we dont destroy our ears
+                if(gamepad1.right_stick_button&&!joyBoy) {
+                    if(shooterOn) {
+                        flywheel.setPower(0);
+                    }else{
+                        flywheel.setPower(-1);
+                    }
 
+                    joyBoy = true;
+                }else if(!gamepad1.right_stick_button){
+                    joyBoy=false;
+                }
                 if (gamepad1.y && !y1) {
                     desired_theta = theta + Math.toRadians(45);
 
@@ -200,11 +216,12 @@ public class BlueT extends LinearOpMode {
 
                     // goofy ahh sleep
                     try { Thread.sleep(300); } catch (Exception ignored) {}
-                    servos.transP1();
+                    //commented because servo was stalling, temporary
+                    //servos.transP1();
                 }
 
                 if (gamepad2.left_trigger > .6) {
-                    servos.transP2();
+                    //servos.transP2();
                 }
 
                 inta.setPower(gamepad2.left_stick_y);
@@ -237,7 +254,7 @@ public class BlueT extends LinearOpMode {
                     coooooking2 = true;
                     servos.stop();
                 }
-                flywheel.setPower(-1);
+                //flywheel.setPower(-1);
                 turn.setPower(gamepad2.right_stick_x);
 
 
